@@ -37,7 +37,7 @@ const LoginPage: React.FC = () => {
         e.preventDefault();
 
         try {
-            const response = await axios.post('https://appointly-backend-ntox.onrender.com/users/register', {
+            await axios.post('https://appointly-backend-ntox.onrender.com/users/register', {
                 username,
                 password,
             });
