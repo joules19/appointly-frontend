@@ -19,6 +19,8 @@ const UserBooking: React.FC = () => {
     const [events, setEvents] = useState<Event[]>([]);
     const [selectedSlot, setSelectedSlot] = useState<{ start: string; end: string } | null>(null);
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [showTooltip, setShowTooltip] = useState<boolean>(true);
+
 
     useEffect(() => {
         api.get('/appointments')
@@ -92,17 +94,40 @@ const UserBooking: React.FC = () => {
         setIsModalVisible(false);
     };
 
+    const handleDismissTooltip = () => {
+        setShowTooltip(false);
+    };
+
     return (
         <div className="container">
             <h1 className="text-center text-[#282828] mb-4 fw-bold" style={{ fontFamily: 'Georgia, serif', letterSpacing: '1px', textShadow: '2px 2px 4px rgba(0, 0, 0, 0.1)' }}>
                 Book an Appointment
             </h1>
+
+            {showTooltip && (
+                <div
+                    className="tooltip-wrapper"
+                    style={{
+                        padding: '10px',
+                        backgroundColor: '#A8D3F5',
+                        color: '#fff',
+                        textAlign: 'center',
+                        borderRadius: '5px',
+                        marginBottom: '15px',
+                        cursor: 'pointer',
+                    }}
+                    onClick={handleDismissTooltip}
+                >
+                    <strong>Tip:</strong> You can enlarge a time cell by dragging the base. Click to dismiss 😀
+                </div>
+            )}
+
             <div className="p-3 rounded mx-auto" style={{ color: '#6c757d', border: '1px solid #bec2c6', padding: '10px', borderRadius: '5px', maxWidth: '1000px' }}>
                 <FullCalendar
                     plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
                     initialView="timeGridWeek"
                     selectable={true}
-                    editable={true} // Allows dragging and resizing events
+                    editable={true}
                     events={events}
                     select={handleSelectSlot}
                     slotMinTime="08:00:00"

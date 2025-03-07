@@ -75,7 +75,6 @@ const LoginPage: React.FC = () => {
 
     return (
         <>
-            {/* Reset URL Modal */}
             <Modal
                 title={<span><ExclamationCircleOutlined style={{ color: '#faad14', marginRight: 8 }} /> Notice</span>}
                 open={isModalVisible}
@@ -83,17 +82,16 @@ const LoginPage: React.FC = () => {
                 onCancel={() => setIsModalVisible(false)}
                 centered
             >
-                <Text>⚠️ Please reset the address in the URL bar before proceeding or remove the login after the slash. The provider used for this hosting has allowed limited configurations so there are some inappropriate behaviours.</Text>
+                <Text>⚠️ This application is best run offline. Please follow the installation steps on GitHub to set it up locally. If accessing online, reset the URL address before proceeding or remove 'login' from the URL. Due to hosting provider limitations, some unexpected behaviors may occur.</Text>
             </Modal>
 
+
             <div className="d-flex flex-column justify-content-center align-items-center vh-100 bg-light">
-                {/* App Name */}
                 <div className="mb-4">
                     <span style={{ color: '#282828', fontSize: '34px', fontWeight: "500" }}>Appointly</span>
                     <span className="rounded-circle bg-primary d-inline-block" style={{ width: '10px', height: '10px' }}></span>
                 </div>
 
-                {/* Login/Register Form */}
                 <Card
                     title={<Title level={3} className="text-center">{mode === 'login' ? 'Login' : 'Register'}</Title>}
                     className="p-4 shadow-lg"
@@ -140,7 +138,6 @@ const LoginPage: React.FC = () => {
                     </form>
                 </Card>
 
-                {/* Demo Credentials */}
                 <Card className="mt-4 p-3 shadow-sm" style={{ width: '400px', borderRadius: '10px' }}>
                     <Title level={4} className="text-center">🔑 Demo Credentials</Title>
 
@@ -162,7 +159,6 @@ const LoginPage: React.FC = () => {
                 </Card>
             </div>
 
-            {/* Toast Container for Notifications */}
             <ToastContainer />
         </>
     );

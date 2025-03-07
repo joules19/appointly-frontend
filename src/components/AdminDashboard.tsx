@@ -3,7 +3,10 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
+import { Modal, Typography } from 'antd'; // Import Ant Design Modal
+import { CalendarOutlined } from '@ant-design/icons';
 import api from '../api';
+const { Title, Text } = Typography;
 
 interface Event {
     title: string;
@@ -13,9 +16,9 @@ interface Event {
 
 const AdminDashboard: React.FC = () => {
     const [events, setEvents] = useState<Event[]>([]);
-    const [showTooltip, setShowTooltip] = useState<boolean>(true); // State to control tooltip visibility
+    const [showTooltip, setShowTooltip] = useState<boolean>(true);
+    const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
 
-    // Fetch all appointments
     useEffect(() => {
         api.get('/appointments')
             .then((response) => {
@@ -25,13 +28,20 @@ const AdminDashboard: React.FC = () => {
                     end: appointment.endTime,
                 }));
                 setEvents(appointments);
+
+                if (appointments.length === 0) {
+                    setIsModalVisible(true);
+                }
             })
             .catch((error) => console.error(error));
     }, []);
 
-    // Dismiss the tooltip manually
     const handleDismissTooltip = () => {
         setShowTooltip(false);
+    };
+
+    const handleCloseModal = () => {
+        setIsModalVisible(false);
     };
 
     return (
@@ -49,7 +59,6 @@ const AdminDashboard: React.FC = () => {
 
             {/* Tooltip */}
             {showTooltip && (
-
                 <div
                     className="tooltip-wrapper"
                     style={{
@@ -67,6 +76,7 @@ const AdminDashboard: React.FC = () => {
                 </div>
             )}
 
+            {/* FullCalendar */}
             <div
                 className="p-3 rounded mx-auto"
                 style={{
@@ -88,6 +98,17 @@ const AdminDashboard: React.FC = () => {
                     nowIndicator={true} // Shows a current time marker
                 />
             </div>
+
+            {/* No Appointments Modal */}
+            <Modal
+                title={<Title level={4}><CalendarOutlined style={{ color: '#1890ff', marginRight: 8 }} /> No Appointments Found</Title>}
+                open={isModalVisible}
+                onOk={() => handleCloseModal()}
+                onCancel={() => handleCloseModal()}
+                centered
+            >
+                <Text>No appointments have been booked yet. Check back later or encourage users to schedule an appointment.</Text>
+            </Modal>
         </div>
     );
 };
