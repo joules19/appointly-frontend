@@ -18,7 +18,7 @@ const LoginPage: React.FC = () => {
         e.preventDefault();
 
         try {
-            const response = await axios.post('http://localhost:3000/auth/login', {
+            const response = await axios.post('https://appointly-backend-ntox.onrender.com/auth/login', {
                 username,
                 password,
             });
@@ -37,7 +37,7 @@ const LoginPage: React.FC = () => {
         e.preventDefault();
 
         try {
-            const response = await axios.post('http://localhost:3000/users/register', {
+            const response = await axios.post('https://appointly-backend-ntox.onrender.com/users/register', {
                 username,
                 password,
             });
@@ -103,7 +103,7 @@ const LoginPage: React.FC = () => {
                                 style={{ cursor: 'pointer', color: '#1890ff' }}
                                 onClick={() => setMode(mode === 'login' ? 'register' : 'login')}
                             >
-                                {mode === 'login' ? 'Create an account' : 'Already have an account? Login'}
+                                {mode === 'login' ? 'Register account to book an appointment' : 'Already have an account? Login'}
                             </span>
                         </div>
                     </form>

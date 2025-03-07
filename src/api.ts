@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create an Axios instance
 const api = axios.create({
-    baseURL: 'http://localhost:3000',
+    baseURL: 'https://appointly-backend-ntox.onrender.com',
 });
 
 // Add a request interceptor to include the token
