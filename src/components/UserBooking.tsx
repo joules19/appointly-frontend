@@ -5,8 +5,8 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import moment from 'moment';
 import api from '../api';
-import { ToastContainer, toast } from 'react-toastify';  // Import Toastify components
-import 'react-toastify/dist/ReactToastify.css';  // Import Toastify CSS
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { Modal, Button } from 'antd';
 
 interface Event {
@@ -20,11 +20,10 @@ const UserBooking: React.FC = () => {
     const [selectedSlot, setSelectedSlot] = useState<{ start: string; end: string } | null>(null);
     const [isModalVisible, setIsModalVisible] = useState(false);
 
-    // Fetch existing appointments
     useEffect(() => {
         api.get('/appointments')
-            .then(response => {
-                const appointments: Event[] = response.data.map((appointment: any) => ({
+            .then(({ data }) => {
+                const appointments: Event[] = data.map((appointment: any) => ({
                     title: 'Booked',
                     start: appointment.startTime,
                     end: appointment.endTime,
@@ -34,31 +33,28 @@ const UserBooking: React.FC = () => {
             .catch(error => console.error(error));
     }, []);
 
-    // Handle slot selection
     const handleSelectSlot = (selectionInfo: any) => {
         const start = selectionInfo.startStr;
         const end = moment(selectionInfo.startStr).add(30, 'minutes').toISOString();
 
-        // Check if the slot is already booked
         const isBooked = events.some(event =>
             moment(start).isBetween(event.start, event.end, null, '[]') ||
             moment(end).isBetween(event.start, event.end, null, '[]')
         );
 
         if (isBooked) {
-            toast.error(
-                <div>
-                    This time slot is already booked.
-                </div>,
-                { position: "top-right", autoClose: 5000, closeButton: true, hideProgressBar: false }
-            );  // Custom error toast
+            toast.error("This time slot is already booked.", {
+                position: "top-right",
+                autoClose: 5000,
+                closeButton: true,
+                hideProgressBar: false,
+            });
         } else {
             setSelectedSlot({ start, end });
             setIsModalVisible(true);
         }
     };
 
-    // Handle booking
     const handleBookAppointment = () => {
         if (!selectedSlot) return;
 
@@ -66,33 +62,32 @@ const UserBooking: React.FC = () => {
             startTime: selectedSlot.start,
             endTime: selectedSlot.end,
         })
-            .then(response => {
-                toast.success(
-                    <div>
-                        Appointment booked successfully!
-                    </div>,
-                    { position: "top-right", autoClose: 5000, closeButton: true, hideProgressBar: false }
-                );  // Custom success toast
+            .then(() => {  // Removed unused 'response'
+                toast.success("Appointment booked successfully!", {
+                    position: "top-right",
+                    autoClose: 5000,
+                    closeButton: true,
+                    hideProgressBar: false,
+                });
                 setEvents([...events, {
                     title: 'Booked',
                     start: selectedSlot.start,
                     end: selectedSlot.end,
                 }]);
                 setSelectedSlot(null);
-                setIsModalVisible(false);  // Close the modal after booking
+                setIsModalVisible(false);
             })
             .catch(error => {
-                toast.error(
-                    <div>
-                        {error.response.data.message}
-                    </div>,
-                    { position: "top-right", autoClose: 5000, closeButton: true, hideProgressBar: false }
-                );  // Custom error toast
+                toast.error(error.response?.data?.message || "Error booking appointment.", {
+                    position: "top-right",
+                    autoClose: 5000,
+                    closeButton: true,
+                    hideProgressBar: false,
+                });
                 console.error(error);
             });
     };
 
-    // Handle canceling the modal
     const handleCancel = () => {
         setIsModalVisible(false);
     };
@@ -116,10 +111,9 @@ const UserBooking: React.FC = () => {
                 />
             </div>
 
-            {/* Ant Design Modal for booking appointment */}
             <Modal
                 title="Confirm Your Appointment"
-                visible={isModalVisible}
+                open={isModalVisible}
                 onCancel={handleCancel}
                 footer={[
                     <Button key="back" onClick={handleCancel}>
@@ -131,13 +125,10 @@ const UserBooking: React.FC = () => {
                 ]}
             >
                 {selectedSlot && (
-                    <>
-                        <p>Selected Slot: <strong>{moment(selectedSlot.start).format('LLLL')}</strong></p>
-                    </>
+                    <p>Selected Slot: <strong>{moment(selectedSlot.start).format('LLLL')}</strong></p>
                 )}
             </Modal>
 
-            {/* Toast Container to display toasts */}
             <ToastContainer
                 position="top-right"
                 autoClose={5000}
