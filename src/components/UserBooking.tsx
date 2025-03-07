@@ -102,6 +102,7 @@ const UserBooking: React.FC = () => {
                     plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
                     initialView="timeGridWeek"
                     selectable={true}
+                    editable={true} // Allows dragging and resizing events
                     events={events}
                     select={handleSelectSlot}
                     slotMinTime="08:00:00"
