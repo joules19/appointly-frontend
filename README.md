@@ -10,7 +10,7 @@ This application is best run offline. Please follow the installation steps below
 Run the following command to clone the repository:  
 
 ```bash
-git clone https://github.com/your-username/appointly-frontend.git
+git clone https://github.com/joules19/appointly-frontend.git
 cd appointly-frontend
 ```
 
