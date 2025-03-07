@@ -1,5 +1,5 @@
 ## ⚠️ Notice  
-This application is best run offline. Please follow the installation steps below to set it up locally. If accessing online, reset the URL address before proceeding or remove 'login' from the URL. Due to hosting provider limitations, some unexpected behaviors may occur.  
+This application is best run offline (Only the React app, the backend API has been deployed and works without problems). Please follow the installation steps below to set it up locally. If accessing online, reset the URL address before proceeding or remove 'login' from the URL. Due to hosting provider limitations, some unexpected behaviors may occur.  
 
 ---
 
